@@ -1,0 +1,89 @@
+# ┌──────────────────────────────────────────────────────────────────────────┐
+# │ 1. Ignore everything by default                                          │
+# └──────────────────────────────────────────────────────────────────────────┘
+
+*
+
+# ┌──────────────────────────────────────────────────────────────────────────┐
+# │ 2. Whitelist top-level files and folders                                 │
+# └──────────────────────────────────────────────────────────────────────────┘
+
+# Always keep .gitignore
+!.gitignore
+
+# Keep metadata/configuration files
+!pyproject.toml
+!requirements.txt
+!setup.py
+
+# Keep 'shadowdaemon' package directory and all .py files
+!shadowdaemon/
+!shadowdaemon/*.py
+
+# ┌──────────────────────────────────────────────────────────────────────────┐
+# │ 3. Within shadowdaemon/, allow only .py files (and subfolders)           │
+# └──────────────────────────────────────────────────────────────────────────┘
+
+# Note: “shadowdaemon/” has already been re-allowed above, but everything
+# under it is still “ignored” unless we explicitly un-ignore .py files (or
+# other necessary subfolders).
+
+shadowdaemon/*
+
+# Whitelist any top-level .py files directly under shadowdaemon/
+!shadowdaemon/*.py
+
+# Re-allow subdirectories one level at a time:
+
+# core module
+!shadowdaemon/core/
+shadowdaemon/core/*
+!shadowdaemon/core/*.py
+
+# platforms module
+!shadowdaemon/platforms/
+shadowdaemon/platforms/*
+!shadowdaemon/platforms/*.py
+
+# utils module
+!shadowdaemon/utils/
+shadowdaemon/utils/*
+!shadowdaemon/utils/*.py
+
+# ┌──────────────────────────────────────────────────────────────────────────┐
+# │ 4. Explicitly ignore build-artifacts, egg-info, virtualenv, etc.         │
+# └──────────────────────────────────────────────────────────────────────────┘
+
+# The egg-info folder
+shadowdaemon.egg-info/
+*.egg-info/
+
+# Ignore virtual environment completely
+venv/
+.envvenv/
+env/
+ENV/
+
+# ┌──────────────────────────────────────────────────────────────────────────┐
+# │ 5. Ignore Python cache files & OS cruft                                  │
+# └──────────────────────────────────────────────────────────────────────────┘
+
+__pycache__/
+*/__pycache__/
+*.py[cod]
+*$py.class
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Any logfiles
+*.log
+
+# ┌──────────────────────────────────────────────────────────────────────────┐
+# │ 6. Ignore any other temporary or generated files                         │
+# └──────────────────────────────────────────────────────────────────────────┘
+
+full_tree.txt
