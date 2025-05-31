@@ -8,25 +8,23 @@
 # │ 2. Whitelist top-level files and folders                                 │
 # └──────────────────────────────────────────────────────────────────────────┘
 
-# Always keep .gitignore
+# Always keep .gitignore, .gitattributes, and README.md
+!.gitattributes
 !.gitignore
+!README.md
 
 # Keep metadata/configuration files
 !pyproject.toml
 !requirements.txt
 !setup.py
 
-# Keep 'shadowdaemon' package directory and all .py files
+# Keep 'shadowdaemon' directory and all .py files
 !shadowdaemon/
 !shadowdaemon/*.py
 
 # ┌──────────────────────────────────────────────────────────────────────────┐
 # │ 3. Within shadowdaemon/, allow only .py files (and subfolders)           │
 # └──────────────────────────────────────────────────────────────────────────┘
-
-# Note: “shadowdaemon/” has already been re-allowed above, but everything
-# under it is still “ignored” unless we explicitly un-ignore .py files (or
-# other necessary subfolders).
 
 shadowdaemon/*
 
@@ -58,7 +56,7 @@ shadowdaemon/utils/*
 shadowdaemon.egg-info/
 *.egg-info/
 
-# Ignore virtual environment completely
+# Ignore virtual environment
 venv/
 .envvenv/
 env/

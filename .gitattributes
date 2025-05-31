@@ -1,0 +1,5 @@
+# Enforce LF in the repo for all Python/text files
+*.py     text eol=lf
+*.toml   text eol=lf
+*.txt    text eol=lf
+*.md     text eol=lf
