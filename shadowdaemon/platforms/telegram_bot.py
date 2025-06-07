@@ -339,7 +339,7 @@ def main():
     app.add_handler(CommandHandler("start", start_command))
     app.add_handler(ChatMemberHandler(bot_added, ChatMemberHandler.MY_CHAT_MEMBER))
     app.add_error_handler(report_telegram_error)
-    app.run_polling()
+    app.run_polling(drop_pending_updates=True)
 
 if __name__ == "__main__":
     main()
