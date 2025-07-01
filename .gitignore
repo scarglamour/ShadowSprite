@@ -18,42 +18,42 @@
 !requirements.txt
 !setup.py
 
-# Keep 'shadowdaemon' directory and all .py files
-!shadowdaemon/
-!shadowdaemon/*.py
+# Keep 'shadowsprite' directory and all .py files
+!shadowsprite/
+!shadowsprite/*.py
 
 # ┌──────────────────────────────────────────────────────────────────────────┐
-# │ 3. Within shadowdaemon/, allow only .py files (and subfolders)           │
+# │ 3. Within shadowsprite/, allow only .py files (and subfolders)           │
 # └──────────────────────────────────────────────────────────────────────────┘
 
-shadowdaemon/*
+shadowsprite/*
 
-# Whitelist any top-level .py files directly under shadowdaemon/
-!shadowdaemon/*.py
+# Whitelist any top-level .py files directly under shadowsprite/
+!shadowsprite/*.py
 
 # Re-allow subdirectories one level at a time:
 
 # core module
-!shadowdaemon/core/
-shadowdaemon/core/*
-!shadowdaemon/core/*.py
+!shadowsprite/core/
+shadowsprite/core/*
+!shadowsprite/core/*.py
 
 # platforms module
-!shadowdaemon/platforms/
-shadowdaemon/platforms/*
-!shadowdaemon/platforms/*.py
+!shadowsprite/platforms/
+shadowsprite/platforms/*
+!shadowsprite/platforms/*.py
 
 # utils module
-!shadowdaemon/utils/
-shadowdaemon/utils/*
-!shadowdaemon/utils/*.py
+!shadowsprite/utils/
+shadowsprite/utils/*
+!shadowsprite/utils/*.py
 
 # ┌──────────────────────────────────────────────────────────────────────────┐
 # │ 4. Explicitly ignore build-artifacts, egg-info, virtualenv, etc.         │
 # └──────────────────────────────────────────────────────────────────────────┘
 
 # The egg-info folder
-shadowdaemon.egg-info/
+shadowsprite.egg-info/
 *.egg-info/
 
 # Ignore virtual environment

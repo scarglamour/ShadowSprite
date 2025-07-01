@@ -1,6 +1,6 @@
-# ShadowDaemonBot
+# ShadowSprite
 
-ShadowDaemonBot is a dual‐platform bot for Discord and Telegram that provides Shadowrun‐themed dice‐rolling, NPC management, and edition configuration. It uses a MySQL backend to store per‐user and per‐chat settings (e.g. “SR4”, “SR5”, or “SR6”). Both Discord and Telegram adapters share the same core logic for rolling dice pools (with exploding “edge” dice), mapping keyword thresholds (e.g. “easy,” “hard”), and formatting output (Markdown/MarkdownV2).
+ShadowSprite is a dual‐platform bot for Discord and Telegram that provides Shadowrun‐themed dice‐rolling, NPC management, and edition configuration. It uses a MySQL backend to store per‐user and per‐chat settings (e.g. “SR4”, “SR5”, or “SR6”). Both Discord and Telegram adapters share the same core logic for rolling dice pools (with exploding “edge” dice), mapping keyword thresholds (e.g. “easy,” “hard”), and formatting output (Markdown/MarkdownV2).
 
 ---
 
@@ -58,7 +58,7 @@ ShadowDaemonBot is a dual‐platform bot for Discord and Telegram that provides 
 ├── requirements.txt
 ├── setup.py
 │
-├── shadowdaemon
+├── shadowsprite
     ├── config.py
     ├── run_all_bots.py   ← (duplicated at root for convenience)
     │
@@ -81,7 +81,7 @@ ShadowDaemonBot is a dual‐platform bot for Discord and Telegram that provides 
   - `.env` – Environment variables (not checked into Git).
   - `pyproject.toml` / `setup.py` / `requirements.txt` – packaging and dependencies.
   - `run_all_bots.py` – Entry point to start both Discord and Telegram bots in parallel.
-- **`shadowdaemon/` Package**
+- **`shadowsprite/` Package**
   - **`config.py`** – Central configuration (loads environment variables, defines tokens, database credentials, edition defaults, prompts).
   - **`core/`**
     - `db_crud.py` – MySQL connection and CRUD for “users,” “chats,” and NPC templates.
@@ -142,8 +142,8 @@ ShadowDaemonBot is a dual‐platform bot for Discord and Telegram that provides 
 1. **Clone the repository**
 
    ```bash
-   git clone git@github.com:scarglamour/ShadowDaemonBot.git
-   cd ShadowDaemonBot
+   git clone git@github.com:scarglamour/ShadowSprite.git
+   cd shadowsprite
    ```
 
 2. **Create & activate a virtual environment**
@@ -167,7 +167,7 @@ ShadowDaemonBot is a dual‐platform bot for Discord and Telegram that provides 
    ```ini
    # Database credentials
    DB_HOST=localhost
-   DB_NAME=shadowDaemon_db
+   DB_NAME=shadowdaemon_db
    DB_USER=shadow_user
    DB_PASS=supersecretpassword
 
@@ -179,11 +179,11 @@ ShadowDaemonBot is a dual‐platform bot for Discord and Telegram that provides 
    TELEGRAM_BOT_TOKEN=987654321:ABC-DEF...xyz
    ```
 
-   - **DB_USER** and **DB_PASS** are used by `shadowdaemon/core/db_crud.py` to connect.
+   - **DB_USER** and **DB_PASS** are used by `shadowsprite/core/db_crud.py` to connect.
    - **DISCORD_LOG_CHANNEL_ID** is the channel ID where all error tracebacks (from both Discord and Telegram) will be forwarded.
 
 5. **Initialize Database Schema**  
-   You must create the following tables in your MySQL database (`shadowDaemon_db` by default). You can adjust column names as desired, but the code expects:
+   You must create the following tables in your MySQL database (`shadowdaemon_db` by default). You can adjust column names as desired, but the code expects:
 
    ```sql
    -- Table for user settings (per‐user SR edition)
@@ -282,7 +282,7 @@ All configuration is managed via environment variables (loaded from `.env`). The
 
 ## Running the Bot
 
-There are two ways to start ShadowDaemonBot:
+There are two ways to start ShadowSprite:
 
 1. **Run Discord and Telegram bots in parallel** (recommended)
 
@@ -298,13 +298,13 @@ There are two ways to start ShadowDaemonBot:
 
    - **Discord only**
      ```bash
-     cd shadowdaemon
-     python -m shadowdaemon.platforms.discord_bot
+     cd shadowsprite
+     python -m shadowsprite.platforms.discord_bot
      ```
    - **Telegram only**
      ```bash
-     cd shadowdaemon
-     python -m shadowdaemon.platforms.telegram_bot
+     cd shadowsprite
+     python -m shadowsprite.platforms.telegram_bot
      ```
 
 ---
@@ -450,7 +450,7 @@ Examples:
 
 ### Core Modules
 
-#### `shadowdaemon/core/db_crud.py`
+#### `shadowsprite/core/db_crud.py`
 
 - **Responsibility**:
   - Creates a MySQL connection (`get_db()`).
@@ -460,7 +460,7 @@ Examples:
   - `get_edition(user_id, chat_id, chat_type)` abstracts “private vs. group.”
   - `add_npc(user_id, chat_id, npc_args)` inserts a new NPC record, with optional “cloning from template” logic (copies over stats columns).
 
-#### `shadowdaemon/core/dice_roller.py`
+#### `shadowsprite/core/dice_roller.py`
 
 - **Responsibility**:
   - `parse_threshold(keyword, edition)` – Maps difficulty keywords (“easy,” “hard,” etc.) to numeric thresholds for SR4 or SR5.
@@ -477,7 +477,7 @@ Examples:
 
 ### Platform Adapters
 
-#### `shadowdaemon/platforms/bot_helper.py`
+#### `shadowsprite/platforms/bot_helper.py`
 
 - **Responsibility**: Shared formatting for Discord and Telegram.
   - `format_die_discord(d: int) → str` – Underlines (5/6) or strikethrough (1) for Discord.
@@ -488,11 +488,11 @@ Examples:
   - `markdown_escape_telegram(text) → str` – Escapes all MarkdownV2‐reserved characters.
   - `parse_npc_create_telegram(args_text) → dict` – Parses `name`, `-a alias`, `-t template`, `-u`, `-s` flags from a `/npc_create` raw string.
 
-#### `shadowdaemon/platforms/discord_bot.py`
+#### `shadowsprite/platforms/discord_bot.py`
 
 - **Responsibility**: Connect to Discord via `discord.py` (v2.x), register slash commands, dispatch to core logic, format replies with `bot_helper`.
 - **Key Components**:
-  - `ShadowDaemonBot(commands.Bot)` – Subclass that syncs slash commands on startup.
+  - `ShadowSprite(commands.Bot)` – Subclass that syncs slash commands on startup.
   - `@bot.tree.command(name="help", ...)` – Sends `HELP_TEXT` (ephemeral).
   - `@bot.tree.command(name="r", ...)` & `@bot.tree.command(name="roll", ...)` – Both call `do_roll(interaction, expression)`.
   - `do_roll(...)` – Parses user/edition context, calls `parse_roll_args`, `get_roll_results`, then `format_for_discord` and sends the response. Catches `ValueError` for bad usage, or other exceptions for error reporting.
@@ -500,7 +500,7 @@ Examples:
   - `@bot.tree.command(name="start", ...)` – In DMs, initializes default edition and responds.
   - **Error Handling**: In `except Exception as e`, calls `report_discord_error(bot, interaction, command_name, e)`.
 
-#### `shadowdaemon/platforms/telegram_bot.py`
+#### `shadowsprite/platforms/telegram_bot.py`
 
 - **Responsibility**: Connect to Telegram via `python-telegram-bot` v20 (asyncio), register CommandHandlers, dispatch to core logic, format replies with `bot_helper`.
 - **Key Components**:
@@ -515,7 +515,7 @@ Examples:
 
 ### Utilities
 
-#### `shadowdaemon/utils/error_handler.py`
+#### `shadowsprite/utils/error_handler.py`
 
 - **Responsibility**: Centralized error logging and forwarding to Discord.
 - **Functions**:
@@ -530,7 +530,7 @@ Examples:
 
 ### Configuration Module
 
-#### `shadowdaemon/config.py`
+#### `shadowsprite/config.py`
 
 - Loads environment variables with `dotenv.load_dotenv()`.
 - Reads:
@@ -570,7 +570,7 @@ Examples:
 3. **Discord Slash Commands Not Appearing**
 
    - Make sure your bot’s “Application ID” is invited to the guild with `applications.commands` scope.
-   - Ensure you have called `await self.tree.sync()` in `ShadowDaemonBot.setup_hook()`.
+   - Ensure you have called `await self.tree.sync()` in `ShadowSprite.setup_hook()`.
    - If testing in a single server, uncomment and configure the `DISCORD_TEST_GUILD_ID` lines, then run in “developer mode.”
 
 4. **Telegram Bot Not Responding**
@@ -633,7 +633,7 @@ Copyright (c) 2024 ScarGlamour
 
 ### Contact / Support
 
-- **Issues & Bug Reports**: [GitHub Issues](https://github.com/scarglamour/ShadowDaemonBot/issues)
-- **Discussions / Feature Requests**: [GitHub Discussions](https://github.com/scarglamour/ShadowDaemonBot/discussions)
+- **Issues & Bug Reports**: [GitHub Issues](https://github.com/scarglamour/ShadowSprite/issues)
+- **Discussions / Feature Requests**: [GitHub Discussions](https://github.com/scarglamour/ShadowSprite/discussions)
 
-If any details are missing (e.g., database migration scripts, additional commands, or environment specifics), please open an Issue or reach out via DM. Enjoy running ShadowDaemonBot!
+If any details are missing (e.g., database migration scripts, additional commands, or environment specifics), please open an Issue or reach out via DM. Enjoy running ShadowSprite!
