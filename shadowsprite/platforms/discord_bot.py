@@ -15,7 +15,7 @@ Includes handlers for:
 
 import discord
 from discord.ext import commands
-from discord import app_commands, Member
+from discord import app_commands, Member, Object
 from shadowsprite.config import (
     DISCORD_TOKEN,
     ALLOWED_EDITIONS,
@@ -42,16 +42,12 @@ class ShadowSprite(commands.Bot):
         super().__init__(command_prefix=[], help_command=None, intents=intents)
 
     async def setup_hook(self):
-        test_guild = discord.Object(id=DISCORD_TEST_GUILD_ID)
+        # Sync test Guild 
+        #guild = discord.Object(id=int(DISCORD_TEST_GUILD_ID))
+        #self.tree.clear_commands(guild=guild)
+        #await self.tree.sync(guild=guild)
 
-        # copy all global commands into the test guild
-        #self.tree.copy_global_to(guild=test_guild)
-        # Remove per-guild commands
-        self.tree.clear_commands(guild=test_guild)
-
-        # sync only to that guild (instant)
-        #await self.tree.sync(guild=test_guild)
-        # sync globally
+        # Sync globally
         await self.tree.sync()
 
 
