@@ -99,7 +99,7 @@ ShadowSprite is a dual‐platform bot for Discord and Telegram that provides Sha
 
 1. **Python 3.10+**
 2. **MySQL Server**
-   - Create a database (e.g. `shadowdaemon_db`).
+   - Create a database (e.g. `shadowsprite_db`).
    - Grant a user (username/password) appropriate privileges.
 3. **Discord Bot Application** (for Discord support)
    - **Discord Bot Token**
@@ -111,7 +111,7 @@ ShadowSprite is a dual‐platform bot for Discord and Telegram that provides Sha
    ```ini
    # MySQL Database
    DB_HOST=localhost
-   DB_NAME=shadowdaemon_db
+   DB_NAME=shadowsprite_db
    DB_USER=your_db_username
    DB_PASS=your_db_password
 
@@ -167,7 +167,7 @@ ShadowSprite is a dual‐platform bot for Discord and Telegram that provides Sha
    ```ini
    # Database credentials
    DB_HOST=localhost
-   DB_NAME=shadowdaemon_db
+   DB_NAME=shadowsprite_db
    DB_USER=shadow_user
    DB_PASS=supersecretpassword
 
@@ -183,7 +183,7 @@ ShadowSprite is a dual‐platform bot for Discord and Telegram that provides Sha
    - **DISCORD_LOG_CHANNEL_ID** is the channel ID where all error tracebacks (from both Discord and Telegram) will be forwarded.
 
 5. **Initialize Database Schema**  
-   You must create the following tables in your MySQL database (`shadowdaemon_db` by default). You can adjust column names as desired, but the code expects:
+   You must create the following tables in your MySQL database (`shadowsprite_db` by default). You can adjust column names as desired, but the code expects:
 
    ```sql
    -- Table for user settings (per‐user SR edition)
@@ -243,7 +243,7 @@ ShadowSprite is a dual‐platform bot for Discord and Telegram that provides Sha
 All configuration is managed via environment variables (loaded from `.env`). The critical keys are:
 
 - **`DB_HOST`**: MySQL host (default: `localhost`).
-- **`DB_NAME`**: MySQL database name (default: `shadowdaemon_db`).
+- **`DB_NAME`**: MySQL database name (default: `shadowsprite_db`).
 - **`DB_USER`**: Database username.
 - **`DB_PASS`**: Database password.
 - **`DISCORD_BOT_TOKEN`**: Discord bot token (from Discord Developer Portal).
